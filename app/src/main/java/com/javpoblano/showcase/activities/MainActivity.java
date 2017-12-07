@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,13 +16,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.javpoblano.showcase.R;
+import com.javpoblano.showcase.adapters.EstadosAdapter;
+import com.javpoblano.showcase.interfaces.ListListener;
+import com.javpoblano.showcase.interfaces.MainLoadInterface;
+import com.javpoblano.showcase.models.ws.Estado;
+import com.javpoblano.showcase.models.ws.EstadosResponse;
+import com.javpoblano.showcase.presenters.MainPresenter;
 import com.javpoblano.showcase.utils.SharedPrefs;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+                    ListListener, MainLoadInterface {
     SharedPrefs sharedPrefs;
+    RecyclerView rv;
+    EstadosAdapter adapter;
+    MainPresenter mainPresenter;
+    EstadosResponse estadosResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +43,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         sharedPrefs = new SharedPrefs(getApplicationContext());
+        mainPresenter = new MainPresenter(getApplicationContext(),this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -42,6 +57,8 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         TextView username = (TextView) header.findViewById(R.id.username);
         username.setText(sharedPrefs.readSharedSetting("name","error"));
+        rv = (RecyclerView)findViewById(R.id.rv);
+        mainPresenter.getEstados();
     }
 
     @Override
@@ -103,5 +120,18 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onItemClick(Estado estado) {
+        Toast.makeText(this, estado.getClvEstado(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEstadosLoad(EstadosResponse estadosResponse) {
+        this.estadosResponse = estadosResponse;
+        adapter = new EstadosAdapter(this,this.estadosResponse.getData().getEstado());
+        rv.setAdapter(adapter);
+        rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 }
