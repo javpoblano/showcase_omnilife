@@ -7,12 +7,15 @@ import com.javpoblano.showcase.R;
 import com.javpoblano.showcase.api.OmnilifeWebService;
 import com.javpoblano.showcase.interfaces.LoginPresenterInterface;
 import com.javpoblano.showcase.interfaces.MainLoadInterface;
+import com.javpoblano.showcase.models.inner.Product;
 import com.javpoblano.showcase.models.ws.EstadosBody;
 import com.javpoblano.showcase.models.ws.EstadosBodyParams;
 import com.javpoblano.showcase.models.ws.EstadosResponse;
 import com.javpoblano.showcase.models.ws.LoginResponse;
 import com.javpoblano.showcase.utils.SharedPrefs;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,12 +32,14 @@ public class MainPresenter {
     Retrofit retrofit;
     OmnilifeWebService omnilifeWebService;
     MainLoadInterface listener;
+    Realm realm;
 
     public MainPresenter(Context context,MainLoadInterface listener) {
         this.context = context;
         this.listener = listener;
         sharedPrefs =  new SharedPrefs(context);
         initRetrofit();
+        realm = Realm.getDefaultInstance();
     }
 
     public void initRetrofit()
@@ -70,4 +75,6 @@ public class MainPresenter {
             }
         });
     }
+
+
 }
