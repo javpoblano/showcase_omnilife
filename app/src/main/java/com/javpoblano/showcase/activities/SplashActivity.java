@@ -27,10 +27,23 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE)
-                        != PackageManager.PERMISSION_GRANTED)
+                        != PackageManager.PERMISSION_GRANTED
+                        ||
+                        ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED
+                        ||
+                        ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED
+                        ||
+                        ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.SEND_SMS)
+                                != PackageManager.PERMISSION_GRANTED
+                        )
                 {
                     ActivityCompat.requestPermissions(parent,
-                            new String[]{Manifest.permission.CALL_PHONE},
+                            new String[]{Manifest.permission.CALL_PHONE,
+                                    Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    Manifest.permission.SEND_SMS},
                             REQUEST_MULTIPLE);
                 }
                 else{
@@ -43,6 +56,8 @@ public class SplashActivity extends AppCompatActivity {
     private void startActivity()
     {
         boolean session = sharedPrefs.readSharedSetting("session",false);
+        //testing
+        session=true;
         if(!session)
             startActivity(new Intent(this,LoginActivity.class));
         else
@@ -57,7 +72,10 @@ public class SplashActivity extends AppCompatActivity {
                 if (grantResults.length>0)
                 {
                     boolean phone = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if(phone)
+                    boolean fine = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean coarse = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+                    boolean sms = grantResults[3] == PackageManager.PERMISSION_GRANTED;
+                    if(phone&&fine&&coarse&&sms)
                     {
                         startActivity();
                     }

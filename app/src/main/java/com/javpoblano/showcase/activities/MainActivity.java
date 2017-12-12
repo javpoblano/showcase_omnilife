@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,6 +26,8 @@ import com.javpoblano.showcase.interfaces.MainLoadInterface;
 import com.javpoblano.showcase.models.ws.Estado;
 import com.javpoblano.showcase.models.ws.EstadosResponse;
 import com.javpoblano.showcase.presenters.MainPresenter;
+import com.javpoblano.showcase.utils.GPSService;
+import com.javpoblano.showcase.utils.NormalService;
 import com.javpoblano.showcase.utils.SharedPrefs;
 
 public class MainActivity extends AppCompatActivity
@@ -59,6 +62,8 @@ public class MainActivity extends AppCompatActivity
         username.setText(sharedPrefs.readSharedSetting("name","error"));
         rv = (RecyclerView)findViewById(R.id.rv);
         mainPresenter.getEstados();
+
+
     }
 
     @Override
@@ -102,11 +107,27 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             startActivity(new Intent(this,ProductListActivity.class));
         } else if (id == R.id.nav_gallery) {
-
+            startActivity(new Intent(this,SensorsActivity.class));
         } else if (id == R.id.nav_slideshow) {
-
+            try
+            {
+                Intent i = new Intent(this, NormalService.class);
+                startService(i);
+            }
+            catch (Exception e)
+            {
+                Log.d("err init",e.toString());
+            }
         } else if (id == R.id.nav_manage) {
-
+            try
+            {
+                Intent i = new Intent(this, NormalService.class);
+                stopService(i);
+            }
+            catch (Exception e)
+            {
+                Log.d("err init",e.toString());
+            }
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

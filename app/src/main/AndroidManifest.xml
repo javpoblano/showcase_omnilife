@@ -3,7 +3,15 @@
     package="com.javpoblano.showcase">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
+    <uses-feature
+        android:name="android.hardware.sensor.proximity"
+        android:required="true" />
+
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
@@ -38,6 +46,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.javpoblano.showcase.activities.MainActivity" />
         </activity>
+        <activity
+            android:name=".activities.SensorsActivity"
+            android:label="@string/title_activity_sensors"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.javpoblano.showcase.activities.MainActivity" />
+        </activity>
+
+        <service
+            android:name=".utils.GPSService"
+            android:exported="false" />
+        <service
+            android:name=".utils.NormalService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
