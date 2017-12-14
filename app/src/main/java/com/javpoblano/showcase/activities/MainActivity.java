@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity
                 Log.d("err init",e.toString());
             }
         } else if (id == R.id.nav_share) {
-
+            startActivity(new Intent(this,TrackerActivity.class));
         } else if (id == R.id.nav_send) {
 
         } else if (id == R.id.nav_logout) {

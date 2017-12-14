@@ -11,6 +11,9 @@ import android.os.IBinder;
 import android.telephony.SmsManager;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.javpoblano.showcase.activities.TrackerActivity;
+
 public class NormalService extends Service implements LocationListener{
 
     LocationManager locationManager;
@@ -45,8 +48,14 @@ public class NormalService extends Service implements LocationListener{
     @Override
     public void onLocationChanged(Location location) {
         String url = "http://maps.google.com/maps?q="+location.getLatitude()+","+location.getLongitude();
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage("2226857591",null,url,null,null);
+        //SmsManager smsManager = SmsManager.getDefault();
+        //smsManager.sendTextMessage("2226857591",null,url,null,null);
+        LatLng newLocation = new LatLng(location.getLatitude(),location.getLongitude());
+        try{
+            TrackerActivity.instance().setLocation(newLocation);
+        }catch (Exception e){
+
+        }
         Log.d("onLocationChanged",url);
     }
 

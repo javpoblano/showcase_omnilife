@@ -15,4 +15,6 @@
     <string name="nav_logout">Cerrar Sesión</string>
     <string name="title_activity_product_list">ProductListActivity</string>
     <string name="title_activity_sensors">SensorsActivity</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_tracker">TrackerActivity</string>
 </resources>
